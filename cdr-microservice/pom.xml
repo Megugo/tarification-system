@@ -36,6 +36,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.anyqn.lib</groupId>
+            <artifactId>pairwiser</artifactId>
+            <version>0.1.21</version>
+        </dependency>
     </dependencies>
 
     <build>
