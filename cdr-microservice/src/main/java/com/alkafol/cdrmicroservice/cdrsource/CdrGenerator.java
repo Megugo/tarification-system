@@ -20,9 +20,6 @@ public class CdrGenerator implements CdrProvider{
     @Value("${generator.max.unique.numbers}")
     private int maxUniqueNumbers;
 
-    @Value("${generator.tariffs}")
-    private String[] tariffs;
-
     @Value("${generator.call.types}")
     private String[] callTypes;
 
@@ -44,20 +41,18 @@ public class CdrGenerator implements CdrProvider{
 
     @SneakyThrows
     private File generateCdr(){
-        Map<Long, String> numberToTariffMap = new HashMap<>();
+        List<Long> numbers = new ArrayList<>();
         File cdr = new File("cdr-microservice/cdr.txt");
         cdr.createNewFile();
         FileWriter fw = new FileWriter(cdr);
 
         for (int i = 0; i < maxUniqueNumbers; ++i){
             long number = 70000000000L + (long)(Math.random() * ((79999999999L - 70000000000L) + 1L));
-            int tariffIndex = (int)(Math.random() * tariffs.length);
-            numberToTariffMap.put(number, tariffs[tariffIndex]);
+            numbers.add(number);
         }
 
         for (int i = 0; i < linesAmount; ++i){
-            List<Long> numbersList = numberToTariffMap.keySet().stream().toList();
-            int numberIndex = (int)(Math.random() * numbersList.size());
+            int numberIndex = (int)(Math.random() * numbers.size());
 
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyMMddHHmmss");
             LocalDateTime callStartingTime = periodStartingTime.plusSeconds(
@@ -71,7 +66,7 @@ public class CdrGenerator implements CdrProvider{
             String callType = callTypes[(int)(Math.random() * callTypes.length)];
 
             fw.write(callType + ","
-                    + numbersList.get(numberIndex) + ","
+                    + numbers.get(numberIndex) + ","
                     + dateTimeFormatter.format(callStartingTime) + ","
                     + dateTimeFormatter.format(callEndingTime) + "\n");
         }
