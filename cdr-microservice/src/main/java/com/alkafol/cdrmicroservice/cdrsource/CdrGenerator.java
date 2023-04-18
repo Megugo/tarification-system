@@ -39,36 +39,45 @@ public class CdrGenerator implements CdrProvider{
         return generateCdr();
     }
 
+    private String generateCallType(){
+        String callType = callTypes[(int)(Math.random() * callTypes.length)];
+        return callType;
+    }
+
+    private long generatePhoneNumber(){
+        long number = 70000000000L + (long)(Math.random() * ((79999999999L - 70000000000L) + 1L));
+        return number;
+    }
+
+    private String generateDateStartEndPare(){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyMMddHHmmss");
+        LocalDateTime callStartingTime = periodStartingTime.plusSeconds(
+                (long)(Math.random() * ChronoUnit.SECONDS.between(periodStartingTime, periodEndingTime))
+        );
+        LocalDateTime callEndingTime = callStartingTime.plusSeconds(
+                (long)(Math.random() * Math.min(
+                        maxCallLength, ChronoUnit.SECONDS.between(callStartingTime, periodEndingTime))
+                )
+        );
+        return dateTimeFormatter.format(callStartingTime) +","+ dateTimeFormatter.format(callEndingTime);
+    }
     @SneakyThrows
     private File generateCdr(){
-        List<Long> numbers = new ArrayList<>();
+//        List<Long> numbers = new ArrayList<>();
         File cdr = new File("cdr-microservice/cdr.txt");
         cdr.createNewFile();
         FileWriter fw = new FileWriter(cdr);
 
-        for (int i = 0; i < maxUniqueNumbers; ++i){
-            long number = 70000000000L + (long)(Math.random() * ((79999999999L - 70000000000L) + 1L));
-            numbers.add(number);
-        }
+//        for (int i = 0; i < maxUniqueNumbers; ++i){
+//            long number = 70000000000L + (long)(Math.random() * ((79999999999L - 70000000000L) + 1L));
+//            numbers.add(number);
+//        }
 
         for (int i = 0; i < linesAmount; ++i){
-            int numberIndex = (int)(Math.random() * numbers.size());
-
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyMMddHHmmss");
-            LocalDateTime callStartingTime = periodStartingTime.plusSeconds(
-                    (long)(Math.random() * ChronoUnit.SECONDS.between(periodStartingTime, periodEndingTime))
-            );
-            LocalDateTime callEndingTime = callStartingTime.plusSeconds(
-                    (long)(Math.random() * Math.min(
-                            maxCallLength, ChronoUnit.SECONDS.between(callStartingTime, periodEndingTime))
-                    )
-            );
-            String callType = callTypes[(int)(Math.random() * callTypes.length)];
-
-            fw.write(callType + ","
-                    + numbers.get(numberIndex) + ","
-                    + dateTimeFormatter.format(callStartingTime) + ","
-                    + dateTimeFormatter.format(callEndingTime) + "\n");
+            fw.write(generateCallType() + ","
+//                    + numbers.get(numberIndex) + ","
+                    + generatePhoneNumber() + ","
+                    + generateDateStartEndPare() + "\n");
         }
 
         fw.close();
