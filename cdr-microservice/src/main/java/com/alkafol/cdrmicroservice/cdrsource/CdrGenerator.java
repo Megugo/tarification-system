@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class CdrGenerator implements CdrProvider{
@@ -77,9 +76,9 @@ public class CdrGenerator implements CdrProvider{
         //without prefix 0
         callTypeInvalidVariables.add("1");
         callTypeInvalidVariables.add("2");
-//        //00 and 03 - limit values for Call types formant
-//        callTypeInvalidVariables.add("00");
-//        callTypeInvalidVariables.add("03");
+        //00 and 03 - limit values for Call types formant
+        callTypeInvalidVariables.add("00");
+        callTypeInvalidVariables.add("03");
         //random 1-3 sign integer
         callTypeInvalidVariables.add(String.valueOf(3+(int) (Math.random()*9)));
         callTypeInvalidVariables.add(String.valueOf(10+(int) (Math.random()*99)));
@@ -99,6 +98,7 @@ public class CdrGenerator implements CdrProvider{
         callTypeInvalidVariables.add("0o0"+ (1 + (int)(Math.random()*2)));
         callTypeInvalidVariables.add("0b0"+ (1 + (int)(Math.random()*2)));
 
+        Collections.shuffle(callTypeInvalidVariables);
         return  callTypeInvalidVariables;
     }
 
@@ -132,8 +132,8 @@ public class CdrGenerator implements CdrProvider{
         invalidNumbers.add("null");
         //length 10 near limit
         invalidNumbers.add("9999999999");
-        //length 16 near limit, because number with regin and "+" sign is 15
-        invalidNumbers.add("1000000000000000");
+        //length 15 near limit
+        invalidNumbers.add("100000000000000");
         //11 zeros
         invalidNumbers.add("00000000000");
         //11 spaces
@@ -156,10 +156,12 @@ public class CdrGenerator implements CdrProvider{
         invalidNumbers.add(String.format("7(%s)%s-%s",
                 randomString("1234567890",3),randomString("1234567890",3),randomString("1234567890",4)));
 
+        Collections.shuffle(invalidNumbers);
         return invalidNumbers;
     }
 
-    private String generateValidDateStartEndPare(){
+    private String generateDateStartEndPair(String mode){
+
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyMMddHHmmss");
         LocalDateTime callStartingTime = periodStartingTime.plusSeconds(
@@ -170,34 +172,56 @@ public class CdrGenerator implements CdrProvider{
                         maxCallLength, ChronoUnit.SECONDS.between(callStartingTime, periodEndingTime))
                 )
         );
-
-        return dateTimeFormatter.format(callStartingTime)+","+dateTimeFormatter.format(callEndingTime);
+        if (mode=="reversed"){
+            return dateTimeFormatter.format(callEndingTime) + "," + dateTimeFormatter.format(callStartingTime);
+        }
+        else {
+            return dateTimeFormatter.format(callStartingTime) + "," + dateTimeFormatter.format(callEndingTime);
+        }
     }
 
-    private List<String> generateInvalidDateStartEndPare() {
-        List<String> invalidDateStartEndPare = new ArrayList<>();
+    private List<String> generateInvalidDateStartEndPairs() {
+        List<String> invalidDateStartEndPairs = new ArrayList<>();
         //empty
-        invalidDateStartEndPare.add(String.format("%s,%s", "",""));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "",""));
         //zero
-        invalidDateStartEndPare.add(String.format("%s,%s", "0","0"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "0","0"));
         //-1
-        invalidDateStartEndPare.add(String.format("%s,%s", "-1","-1"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "-1","-1"));
         //null
-        invalidDateStartEndPare.add(String.format("%s,%s", "null","null"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "null","null"));
         //Start > End
-        invalidDateStartEndPare.add(String.format("%s,%s", periodEndingTime,periodStartingTime));
+        invalidDateStartEndPairs.add(generateDateStartEndPair("reversed"));
         //zeros
-        invalidDateStartEndPare.add(String.format("%s,%s", "00000000000000","00000000000000"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "00000000000000","00000000000000"));
+        //0 day in month
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20230400000000","20230400001000"));
         //32 day in month
-        invalidDateStartEndPare.add(String.format("%s,%s", "20230432000000","20230432100000"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20230432000000","20230432001000"));
+        //0 month
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20230015000000","20230015001000"));
         //13 month
-        invalidDateStartEndPare.add(String.format("%s,%s", "20231315000000","20231315100000"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20231315000000","20231315001000"));
+        //24 hours
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20230415240000","20230415241000"));
+        //60 min
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20230415006000","20230415006010"));
+        //60 sec
+        invalidDateStartEndPairs.add(String.format("%s,%s", "20230415000060","20230415000160"));
         //dates without 1 symbol
-        invalidDateStartEndPare.add(String.format("%s,%s", "2023041500000","2023041510000"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "2023041500000","2023041500100"));
         //dates with 1 more symbol
-        invalidDateStartEndPare.add(String.format("%s,%s", "202304150000000","20230415100000"));
+        invalidDateStartEndPairs.add(String.format("%s,%s", "202304150000000","202304150010000"));
+        //different format:
+        // "/" delimiter
+        invalidDateStartEndPairs.add(String.format("%s,%s", "2023/04/15/00/00/00","2023/04/15/00/10/00"));
+        // "-" delimiter
+        invalidDateStartEndPairs.add(String.format("%s,%s", "2023-04-15-00-00-00","2023-04-15-00-10-00"));
 
-        return invalidDateStartEndPare;
+
+
+        Collections.shuffle(invalidDateStartEndPairs);
+        return invalidDateStartEndPairs;
     }
 
     @SneakyThrows
@@ -208,11 +232,12 @@ public class CdrGenerator implements CdrProvider{
         cdr.createNewFile();
         FileWriter fw = new FileWriter(cdr);
 
+        //генерация комбинаций невалидных значений
         Map<String, List<String>> invalidParams = new HashMap<>();
 
         invalidParams.put("invalidPhoneNumber",generateInvalidPhoneNumber());
         invalidParams.put("invalidCallType",generateInvalidCallType());
-        invalidParams.put("invalidPhoneDateStartEndPare",generateInvalidDateStartEndPare());
+        invalidParams.put("invalidPhoneDateStartEndPair", generateInvalidDateStartEndPairs());
 
         PairwiseGenerator<String, String> gen = new PairwiseGenerator<>(invalidParams);
         gen.stream().forEach(test -> {
@@ -223,13 +248,14 @@ public class CdrGenerator implements CdrProvider{
             }
         });
 
+        //наполнение файла валидными значениями
         for (int i = 0; i < linesAmount; ++i){
 
             int numberIndex = (int)(Math.random() * numbers.size());
 
             fw.write(generateValidCallType() + ","
                     + numbers.get(numberIndex) + ","
-                    + generateValidDateStartEndPare() + "\n");
+                    + generateDateStartEndPair("default") + "\n");
         }
 
         fw.close();
