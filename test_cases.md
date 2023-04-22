@@ -1224,7 +1224,6 @@
 
 </ol>
 
-<h1 align="center">Тест кейсы для тарификатора</h1>
 <h2 >METHOD: PATCH | Endpoint: ../manager/billing</h2>
 <h3>Позитивные</h3>
 <ol>
