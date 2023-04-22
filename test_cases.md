@@ -777,7 +777,7 @@
 
 </ol>
 
-<h2 >METHOD: PATCH| Endpoint: ..manager/chaneTariff/</h2>
+<h2 >METHOD: POST| Endpoint: ..manager/abonent/</h2>
 <h3>Позитивные</h3>
 
 <ol >
@@ -936,6 +936,20 @@
 </ul>
 </li>
 
+<li>Занятый номер
+<ul>
+<li><em>Предусловия: зарегестрировать пользователя с номером existNumber</em></li>
+<li> Отправить JSON
+
+    {
+        "phoneNumber": existNumber,
+        "tariff_id": "randomValidTariff",
+        "ballance": randomValidBallance
+    }           
+
+<li><em>Постусловия: удалить пользователя с номером existNumber</em></li>
+</ul>
+</li>
 
 <li>Номер длиной 10 цифр тип данных integer phoneNumber
 <ul>
