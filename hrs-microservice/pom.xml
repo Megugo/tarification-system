@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.alkafol</groupId>
-    <artifactId>cdr-microservice</artifactId>
+    <artifactId>hrs-microservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cdr-microservice</name>
-    <description>cdr-microservice</description>
+    <name>hrs-microservice</name>
+    <description>hrs-microservice</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -24,6 +24,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,16 +43,6 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.anyqn.lib</groupId>
-            <artifactId>pairwiser</artifactId>
-            <version>0.1.21</version>
         </dependency>
     </dependencies>
 
