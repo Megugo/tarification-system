@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,8 +36,8 @@ public class ManagerController {
             @ApiResponse(responseCode = "403", description = "No permissions to resource. Might also be server-side error")
     })
     @PostMapping("/abonent")
-    public CreateNewClientDto createNewClient(@Valid @RequestBody CreateNewClientDto createNewClientDto){
-        return managerService.createNewClient(createNewClientDto);
+    public ClientDto createNewClient(@RequestBody ClientDto clientDto){
+        return managerService.createNewClient(clientDto);
     }
 
     @Operation(summary = "Start billing")

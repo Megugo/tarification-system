@@ -203,7 +203,7 @@ public class BrtService {
     }
 
     // создание клиента (по dto от менеджера)
-    public CreateNewClientDto createAbonent(CreateNewClientDto createNewClientDto) {
+    public ClientDto createAbonent(ClientDto createNewClientDto) {
         if (clientRepository.findByNumber(createNewClientDto.getPhoneNumber()) != null){
             throw new EntityExistsException();
         }
@@ -218,7 +218,7 @@ public class BrtService {
 
         clientRepository.save(client);
 
-        return new CreateNewClientDto(
+        return new ClientDto(
                 client.getNumber(),
                 client.getTariff().getId(),
                 client.getBalance()

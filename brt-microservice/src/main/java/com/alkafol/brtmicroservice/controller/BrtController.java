@@ -55,15 +55,15 @@ public class BrtController {
             @ApiResponse(responseCode = "200", description = "Abonent was successfully created"),
     })
     @PostMapping("/create_abonent")
-    public CreateNewClientDto createAbonent(@RequestBody CreateNewClientDto createNewClientDto){
-        return brtService.createAbonent(createNewClientDto);
+    public ClientDto createAbonent(@RequestBody ClientDto clientDto){
+        return brtService.createAbonent(clientDto);
     }
 
     @Operation(summary = "Change tariff for client")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tariff was successfully changed"),
     })
-    @PatchMapping("/change_tariff/{phoneNumber}/{newTariff}")
+    @PatchMapping("/change_tariff")
     public ChangeTariffResponseDto changeTariff(@RequestBody ChangeTariffRequestDto changeTariffRequestDto){
         return brtService.changeTariff(changeTariffRequestDto);
     }

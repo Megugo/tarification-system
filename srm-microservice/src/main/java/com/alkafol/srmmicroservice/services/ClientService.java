@@ -59,12 +59,6 @@ public class ClientService {
             throw new EntityNotFoundException();
         }
 
-        User user = new User(
-            String.valueOf(clientRegistrationDto.getPhoneNumber()),
-            clientRegistrationDto.getPassword(),
-            Role.CLIENT
-        );
-
-        userService.createNewUser(user);
+        userService.createNewClient(clientRegistrationDto);
     }
 }
