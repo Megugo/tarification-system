@@ -34,6 +34,11 @@ public class CdrService {
     }
 
     @EventListener(ApplicationReadyEvent.class)
+    public void initializeCdr() throws InterruptedException {
+        Thread.sleep(15000);
+        sendCdr();
+    }
+
     public String sendCdr(){
         getCdr();
 
@@ -41,7 +46,7 @@ public class CdrService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("multipartFile", new FileSystemResource("cdr-microservice/cdr.txt"));
+        body.add("multipartFile", new FileSystemResource("cdr.txt"));
 
         String destUrl = env.getProperty("brt.microservice.address") + "/start_tarification";
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);

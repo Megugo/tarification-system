@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -237,7 +239,7 @@ public class CdrGenerator implements CdrProvider {
     private File generateCdr() {
         List<String> numbers = generateValidPhoneNumber();
 
-        File cdr = new File("cdr-microservice/cdr.txt");
+        File cdr = new File("cdr.txt");
         cdr.createNewFile();
         FileWriter fw = new FileWriter(cdr);
 

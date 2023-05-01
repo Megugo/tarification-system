@@ -54,10 +54,10 @@ public class BrtService {
     }
 
     public void convertToCdrPlus() throws Exception {
-        Scanner in = new Scanner(new File("brt-microservice/cdr.txt"));
+        Scanner in = new Scanner(new File("cdr.txt"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
-        File cdrPlus = new File("brt-microservice/cdr+.txt");
+        File cdrPlus = new File("cdr+.txt");
         cdrPlus.createNewFile();
         FileWriter fw = new FileWriter(cdrPlus);
 
@@ -115,7 +115,7 @@ public class BrtService {
 
     public TarificationResult processHrsOutput(TarificationResponseDto tarificationResponseDto) throws IOException {
         // создание файла отчёта из DTO
-        objectMapper.writeValue(Paths.get("brt-microservice/report.json").toFile(), tarificationResponseDto);
+        objectMapper.writeValue(Paths.get("report.json").toFile(), tarificationResponseDto);
 
         TarificationResult tarificationResult = new TarificationResult(new ArrayList<>());
 
@@ -137,7 +137,7 @@ public class BrtService {
 
     public TarificationResult handleCdr(MultipartFile multipartFile) throws Exception {
         // создание cdr
-        Path filepath = Path.of("brt-microservice/" + multipartFile.getOriginalFilename());
+        Path filepath = Path.of("cdr.txt");
         multipartFile.transferTo(filepath);
 
         // создание cdr+
@@ -147,7 +147,7 @@ public class BrtService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("multipartFile", new FileSystemResource("brt-microservice/cdr+.txt"));
+        body.add("multipartFile", new FileSystemResource("cdr+.txt"));
 
         String destUrl = env.getProperty("hrs.microservice.address") + "/count_cdrplus";
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
@@ -250,7 +250,7 @@ public class BrtService {
 
     // получение тарификации для отдельного клиента
     public ClientTarificationDetails getClientReport(long phoneNumber) throws IOException {
-        File report = new File("brt-microservice/report.json");
+        File report = new File("report.json");
         JsonNode root = objectMapper.readTree(report);
 
         // парсинг json отчёта о полной тарификации

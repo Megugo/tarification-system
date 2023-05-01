@@ -67,7 +67,7 @@ public class HrsService {
 
     public TarificationResult countPriceForClient(MultipartFile multipartFile) throws IOException {
         // парсинг MultipartFile в обычный файл
-        Path filepath = Path.of("hrs-microservice/" + multipartFile.getOriginalFilename());
+        Path filepath = Path.of("cdr+.txt");
         multipartFile.transferTo(filepath);
         File file = new File(String.valueOf(filepath));
 
