@@ -21,6 +21,6 @@ alter table tariff
     owner to postgres;
 
 INSERT INTO Tariff (id, base_price, default_incoming_price, default_outgoing_price, is_special_minutes_splitted, special_minutes_incoming_amount, special_minutes_incoming_price, special_minutes_outgoing_amount, special_minutes_outgoing_price)
-VALUES (06, 100, 1, 1, false, 300, 0, 300, 0),
-       (03, 0, 1.5, 1.5, false, 0, 0, 0, 0),
-       (11, 0, 0, 1.5, true, 0, 0, 100, 0.5);
+VALUES ('06', 100, 1, 1, false, 300, 0, 300, 0),
+       ('03', 0, 1.5, 1.5, false, 0, 0, 0, 0),
+       ('11', 0, 0, 1.5, true, 0, 0, 100, 0.5);
