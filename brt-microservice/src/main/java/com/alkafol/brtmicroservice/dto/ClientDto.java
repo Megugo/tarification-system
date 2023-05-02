@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientDto {
-    private long phoneNumber;
+    private String phoneNumber;
     private String tariffId;
     private double balance;
 }

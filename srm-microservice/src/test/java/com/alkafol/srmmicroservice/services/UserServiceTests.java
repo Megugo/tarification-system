@@ -78,7 +78,7 @@ public class UserServiceTests {
     @Test
     public void testCreateNewClientDuplicationException() {
         // given
-        Long phoneNumber = 89991234567L;
+        String phoneNumber = "89991234567";
         String password = "1234";
         ClientRegistrationDto clientRegistrationDto = new ClientRegistrationDto(
                 phoneNumber,
@@ -86,7 +86,7 @@ public class UserServiceTests {
         );
 
         underTest = spy(underTest);
-        doReturn(Boolean.FALSE).when(underTest).isUsernameFree(String.valueOf(phoneNumber));
+        doReturn(Boolean.FALSE).when(underTest).isUsernameFree(phoneNumber);
 
         // when
         // then
@@ -96,7 +96,7 @@ public class UserServiceTests {
     @Test
     public void testCreateNewClient() {
         // given
-        Long phoneNumber = 89991234567L;
+        String phoneNumber = "89991234567";
         String password = "1234";
         String encodedPassword = "encoded_password";
         ClientRegistrationDto clientRegistrationDto = new ClientRegistrationDto(
@@ -105,7 +105,7 @@ public class UserServiceTests {
         );
 
         underTest = spy(underTest);
-        doReturn(Boolean.TRUE).when(underTest).isUsernameFree(String.valueOf(phoneNumber));
+        doReturn(Boolean.TRUE).when(underTest).isUsernameFree(phoneNumber);
         doReturn(encodedPassword).when(passwordEncoder).encode(password);
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -119,6 +119,6 @@ public class UserServiceTests {
 
         assertEquals(Role.CLIENT, userArgumentCaptor.getValue().getRole());
         assertEquals(encodedPassword, userArgumentCaptor.getValue().getPassword());
-        assertEquals(phoneNumber.toString(), userArgumentCaptor.getValue().getUsername());
+        assertEquals(phoneNumber, userArgumentCaptor.getValue().getUsername());
     }
 }

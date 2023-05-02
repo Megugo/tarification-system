@@ -36,7 +36,7 @@ public class ClientServiceTests {
     public void testRegisterUserWithoutNumberInSrm() {
         // given
         String brtMicroserviceAddress = "localhost:8080";
-        long clientPhoneNumber = 89991234567L;
+        String clientPhoneNumber = "89991234567";
         String clientPassword = "1234";
         ClientRegistrationDto clientRegistrationDto = new ClientRegistrationDto(
                 clientPhoneNumber,
@@ -55,7 +55,7 @@ public class ClientServiceTests {
     public void testRegisterClientWithNumberInSrm() {
         // given
         String brtMicroserviceAddress = "localhost:8080";
-        long clientPhoneNumber = 89991234567L;
+        String clientPhoneNumber = "89991234567";
         String clientPassword = "1234";
 
         ClientRegistrationDto clientRegistrationDto = new ClientRegistrationDto(
@@ -76,8 +76,8 @@ public class ClientServiceTests {
     @Test
     public void testGetReportForAnotherUser(){
         // given
-        long requestedPhoneNumber = 89991234567L;
-        long userPhoneNumber = 89991111111L;
+        String requestedPhoneNumber = "89991234567";
+        String userPhoneNumber = "89991111111";
 
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
@@ -85,7 +85,7 @@ public class ClientServiceTests {
         SecurityContextHolder.setContext(securityContext);
         User user = mock(User.class);
         doReturn(user).when(authentication).getPrincipal();
-        doReturn(String.valueOf(userPhoneNumber)).when(user).getUsername();
+        doReturn(userPhoneNumber).when(user).getUsername();
 
         // when
         // then
@@ -95,7 +95,7 @@ public class ClientServiceTests {
     @Test
     public void testGetReportForUserWhoRequestsIt() throws IllegalAccessException {
         // given
-        long userPhoneNumber = 89991234567L;
+        String userPhoneNumber = "89991234567";
         String brtMicroserviceAddress = "localhost:8080";
 
         Authentication authentication = mock(Authentication.class);
@@ -105,7 +105,7 @@ public class ClientServiceTests {
         User user = mock(User.class);
 
         doReturn(user).when(authentication).getPrincipal();
-        doReturn(String.valueOf(userPhoneNumber)).when(user).getUsername();
+        doReturn(userPhoneNumber).when(user).getUsername();
         doReturn(brtMicroserviceAddress).when(env).getProperty("brt.microservice.address");
 
         // when

@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ReportResponseDto {
     private long id;
-    private long phoneNumber;
+    private String phoneNumber;
     private String tariffIndex;
     private List<CallResponseDto> payload;
     private double totalCost;

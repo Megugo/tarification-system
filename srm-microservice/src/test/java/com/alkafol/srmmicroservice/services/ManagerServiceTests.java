@@ -30,7 +30,7 @@ public class ManagerServiceTests {
     public void testCreateNewClient() {
         // given
         String brtMicroserviceAddress = "localhost:8080";
-        long phoneNumber = 89991234567L;
+        String phoneNumber = "89991234567";
         String tariffId = "06";
         int balance = 100;
         ClientDto clientDto = new ClientDto(
@@ -87,7 +87,7 @@ public class ManagerServiceTests {
     public void testChangeTariff(){
         // given
         String brtMicroserviceAddress = "localhost:8080";
-        long phoneNumber = 89991234567L;
+        String phoneNumber = "89991234567";
         String tariffId = "06";
         ChangeTariffRequestDto changeTariffRequestDto = new ChangeTariffRequestDto(
                 phoneNumber,

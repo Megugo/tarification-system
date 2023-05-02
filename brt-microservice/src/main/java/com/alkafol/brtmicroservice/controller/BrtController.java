@@ -73,7 +73,7 @@ public class BrtController {
             @ApiResponse(responseCode = "200", description = "Check was performed."),
     })
     @GetMapping("/check_client_existence/{phoneNumber}")
-    public boolean checkClientExistence(@PathVariable long phoneNumber){
+    public boolean checkClientExistence(@PathVariable String phoneNumber){
         return brtService.checkClientExistence(phoneNumber);
     }
 
@@ -82,7 +82,7 @@ public class BrtController {
             @ApiResponse(responseCode = "200", description = "Report was successfully generated"),
     })
     @GetMapping("/get_client_report/{phoneNumber}")
-    public ClientTarificationDetails getClientReport(@PathVariable long phoneNumber) throws IOException {
+    public ClientTarificationDetails getClientReport(@PathVariable String phoneNumber) throws IOException {
         return brtService.getClientReport(phoneNumber);
     }
 }

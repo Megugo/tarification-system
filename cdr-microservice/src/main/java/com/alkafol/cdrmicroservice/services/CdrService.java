@@ -34,11 +34,6 @@ public class CdrService {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initializeCdr() throws InterruptedException {
-        Thread.sleep(15000);
-        sendCdr();
-    }
-
     public String sendCdr(){
         getCdr();
 

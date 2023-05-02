@@ -11,6 +11,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientGenerationRequestDto {
-    Set<Long> baseNumbers;
+    Set<String> baseNumbers;
     int numbersAmount;
 }

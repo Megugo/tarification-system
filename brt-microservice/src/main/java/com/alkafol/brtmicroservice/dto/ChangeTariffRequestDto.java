@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChangeTariffRequestDto {
-    private long phoneNumber;
+    private String phoneNumber;
     private String tariffId;
 }

@@ -241,50 +241,52 @@ public class CdrGenerator implements CdrProvider {
 
         File cdr = new File("cdr.txt");
         cdr.createNewFile();
-        FileWriter fw = new FileWriter(cdr);
+        try(FileWriter fw = new FileWriter(cdr)) {
 
-        //генерация комбинаций невалидных значений
-        Map<String, List<String>> invalidParams = new HashMap<>();
+            //генерация комбинаций невалидных значений
+            Map<String, List<String>> invalidParams = new HashMap<>();
 
-        invalidParams.put("invalidPhoneNumber", generateInvalidPhoneNumber());
-        invalidParams.put("invalidCallType", generateInvalidCallType());
-        invalidParams.put("invalidPhoneDateStartEndPair", generateInvalidDateStartEndPairs());
+            invalidParams.put("invalidPhoneNumber", generateInvalidPhoneNumber());
+            invalidParams.put("invalidCallType", generateInvalidCallType());
+            invalidParams.put("invalidPhoneDateStartEndPair", generateInvalidDateStartEndPairs());
 
-        PairwiseGenerator<String, String> gen = new PairwiseGenerator<>(invalidParams);
-        gen.stream().forEach(test -> {
-            try {
-                fw.write(test.get(2) + "," + test.get(0) + "," + test.get(1) + "\n");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            PairwiseGenerator<String, String> gen = new PairwiseGenerator<>(invalidParams);
+            gen.stream().forEach(test -> {
+                try {
+                    fw.write(test.get(2) + "," + test.get(0) + "," + test.get(1) + "\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            List<String> validNumbers = new ArrayList<>();
+
+            //наполнение файла валидными значениями
+            for (int i = 0; i < linesAmount; ++i) {
+
+                int numberIndex = (int) (Math.random() * numbers.size());
+
+                for (int j = 0; j < 10 + (int) (Math.random() * (30 - 10)); ++j) {
+                    fw.write(generateValidCallType() + ","
+                            + numbers.get(numberIndex) + ","
+                            + generateDateStartEndPair("default") + "\n");
+                }
+
+                boolean isBrtClient = (Math.random() * 2) <= 1;
+                if (isBrtClient) {
+                    validNumbers.add(numbers.get(numberIndex));
+                }
             }
-        });
 
-        List<Long> validNumbers = new ArrayList<>();
-
-        //наполнение файла валидными значениями
-        for (int i = 0; i < linesAmount; ++i) {
-
-            int numberIndex = (int) (Math.random() * numbers.size());
-
-            for (int j = 0; j < 30 + (int)(Math.random() * (50 - 30)); ++j) {
-                fw.write(generateValidCallType() + ","
-                        + numbers.get(numberIndex) + ","
-                        + generateDateStartEndPair("default") + "\n");
-            }
-
-            boolean isBrtClient = (Math.random() * 2) <= 1;
-            if (isBrtClient){
-                validNumbers.add(Long.valueOf(numbers.get(numberIndex)));
-            }
+            sendClientsGenerationRequest(validNumbers, validNumbers.size() * 3);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        fw.close();
-
-        sendClientsGenerationRequest(validNumbers, validNumbers.size() * 3);
         return cdr;
     }
 
-    private void sendClientsGenerationRequest(List<Long> baseNumbers, int amount) {
+    private void sendClientsGenerationRequest(List<String> baseNumbers, int amount) {
         ClientGenerationRequestDto clientGenerationRequestDto = new ClientGenerationRequestDto(
             baseNumbers,
             amount

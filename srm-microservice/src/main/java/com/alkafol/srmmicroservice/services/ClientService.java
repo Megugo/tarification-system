@@ -33,10 +33,10 @@ public class ClientService {
         );
     }
 
-    public ReportResponseDto getReport(long phoneNumber) throws IllegalAccessException {
+    public ReportResponseDto getReport(String phoneNumber) throws IllegalAccessException {
         // проверка что пользователь не хочет взять чужой отчёт
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (Long.parseLong(((User) auth.getPrincipal()).getUsername()) != phoneNumber){
+        if (!((User) auth.getPrincipal()).getUsername().equals(phoneNumber)){
             throw new IllegalAccessException();
         }
 
