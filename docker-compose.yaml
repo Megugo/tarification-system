@@ -19,32 +19,44 @@ services:
 
   brt-microservice:
     image: brt-microservice
+    healthcheck:
+      test: "./wait-for-it.sh localhost:8080"
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "8082:8080"
     depends_on:
       database:
         condition: service_healthy
       hrs-microservice:
-        condition: service_started
+        condition: service_healthy
     environment:
       - spring.datasource.url=jdbc:postgresql://database:5432/BRT
       - spring.datasource.username=postgres
       - spring.datasource.password=1234
       - spring.jpa.hibernate.ddl-auto=update
       - srm.microservice.address=http://srm-microservice:8080
-      - hrs.microservice.address=http://hrs-microservice:8083
-      - cdr.microservice.address=http://cdr-microservice:8081
-      - brt.microservice.address=http://brt-microservice:8082
+      - hrs.microservice.address=http://hrs-microservice:8080
+      - cdr.microservice.address=http://cdr-microservice:8080
+      - brt.microservice.address=http://brt-microservice:8080
+      - server.port=8080
 
   hrs-microservice:
     image: hrs-microservice
+    healthcheck:
+      test: "./wait-for-it.sh localhost:8080"
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "8083:8080"
     environment:
       - srm.microservice.address=http://srm-microservice:8080
-      - hrs.microservice.address=http://hrs-microservice:8083
-      - cdr.microservice.address=http://cdr-microservice:8081
-      - brt.microservice.address=http://brt-microservice:8082
+      - hrs.microservice.address=http://hrs-microservice:8080
+      - cdr.microservice.address=http://cdr-microservice:8080
+      - brt.microservice.address=http://brt-microservice:8080
+      - server.port=8080
 
   cdr-microservice:
     image: cdr-microservice
@@ -52,12 +64,13 @@ services:
       - "8081:8080"
     depends_on:
       brt-microservice:
-        condition: service_started
+        condition: service_healthy
     environment:
       - srm.microservice.address=http://srm-microservice:8080
-      - hrs.microservice.address=http://hrs-microservice:8083
-      - cdr.microservice.address=http://cdr-microservice:8081
-      - brt.microservice.address=http://brt-microservice:8082
+      - hrs.microservice.address=http://hrs-microservice:8080
+      - cdr.microservice.address=http://cdr-microservice:8080
+      - brt.microservice.address=http://brt-microservice:8080
+      - server.port=8080
 
   srm-microservice:
     image: srm-microservice
@@ -67,7 +80,7 @@ services:
       database:
         condition: service_healthy
       brt-microservice:
-        condition: service_started
+        condition: service_healthy
       cdr-microservice:
         condition: service_started
     environment:
@@ -76,6 +89,7 @@ services:
       - spring.datasource.password=1234
       - spring.jpa.hibernate.ddl-auto=update
       - srm.microservice.address=http://srm-microservice:8080
-      - hrs.microservice.address=http://hrs-microservice:8083
-      - cdr.microservice.address=http://cdr-microservice:8081
-      - brt.microservice.address=http://brt-microservice:8082
+      - hrs.microservice.address=http://hrs-microservice:8080
+      - cdr.microservice.address=http://cdr-microservice:8080
+      - brt.microservice.address=http://brt-microservice:8080
+      - server.port=8080
