@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   database:
-    image: database
+    image: alkafol/tarification-system:database
     restart: always
     healthcheck:
       test: [ "CMD", "pg_isready","-d","postgres","-U","postgres" ]
@@ -18,7 +18,7 @@ services:
 
 
   brt-microservice:
-    image: brt-microservice
+    image: alkafol/tarification-system:brt-microservice
     healthcheck:
       test: "./wait-for-it.sh localhost:8080"
       interval: 10s
@@ -43,7 +43,7 @@ services:
       - server.port=8080
 
   hrs-microservice:
-    image: hrs-microservice
+    image: alkafol/tarification-system:hrs-microservice
     healthcheck:
       test: "./wait-for-it.sh localhost:8080"
       interval: 10s
@@ -59,7 +59,7 @@ services:
       - server.port=8080
 
   cdr-microservice:
-    image: cdr-microservice
+    image: alkafol/tarification-system:cdr-microservice
     ports:
       - "8081:8080"
     depends_on:
@@ -73,7 +73,7 @@ services:
       - server.port=8080
 
   srm-microservice:
-    image: srm-microservice
+    image: alkafol/tarification-system:srm-microservice
     ports:
       - "8080:8080"
     depends_on:
