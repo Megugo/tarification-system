@@ -41,7 +41,7 @@ public class CdrService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("multipartFile", new FileSystemResource("cdr-microservice/cdr.txt"));
+        body.add("multipartFile", new FileSystemResource("cdr.txt"));
 
         String destUrl = env.getProperty("brt.microservice.address") + "/start_tarification";
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);

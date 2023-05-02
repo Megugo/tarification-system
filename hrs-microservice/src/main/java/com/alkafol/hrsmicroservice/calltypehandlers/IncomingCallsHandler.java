@@ -27,7 +27,7 @@ public class IncomingCallsHandler implements CallTypeHandler {
         else {
             // минуты по тарифу частично покрывают звонок
             if (clientStats.getLeftedIncomingSpecialMinutes() < durationInMinutes){
-                callPrice += clientStats.getLeftedIncomingSpecialMinutes() * tariffInfo.getSpecialMinutesIncomingAmount();
+                callPrice += clientStats.getLeftedIncomingSpecialMinutes() * tariffInfo.getSpecialMinutesIncomingPrice();
                 callPrice += (durationInMinutes - clientStats.getLeftedIncomingSpecialMinutes()) * tariffInfo.getDefaultIncomingPrice();
                 clientStats.setLeftedIncomingSpecialMinutes(0);
 

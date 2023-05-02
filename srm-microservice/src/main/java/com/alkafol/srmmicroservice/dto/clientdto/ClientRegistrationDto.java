@@ -1,5 +1,6 @@
 package com.alkafol.srmmicroservice.dto.clientdto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientRegistrationDto {
-    private long phoneNumber;
+    @Pattern(regexp = "\\d{11,13}")
+    private String phoneNumber;
     private String password;
 }

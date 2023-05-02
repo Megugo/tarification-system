@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +26,7 @@ public class ManagerController {
             @ApiResponse(responseCode = "403", description = "No permissions to resource. Might also be server-side error")
     })
     @PatchMapping("/changeTariff")
-    public ChangeTariffResponseDto changeTariff(@RequestBody ChangeTariffRequestDto changeTariffRequestDto){
+    public ChangeTariffResponseDto changeTariff(@Valid @RequestBody ChangeTariffRequestDto changeTariffRequestDto){
         return managerService.changeTariff(changeTariffRequestDto);
     }
 
@@ -36,7 +37,7 @@ public class ManagerController {
             @ApiResponse(responseCode = "403", description = "No permissions to resource. Might also be server-side error")
     })
     @PostMapping("/abonent")
-    public ClientDto createNewClient(@RequestBody ClientDto clientDto){
+    public ClientDto createNewClient(@Valid @RequestBody ClientDto clientDto){
         return managerService.createNewClient(clientDto);
     }
 

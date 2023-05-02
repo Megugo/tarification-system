@@ -8,13 +8,13 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     @Column(unique=true)
-    Long number;
+    String number;
 
     @OneToOne
     Tariff tariff;
     Double balance;
 
-    public Client(Long number, Tariff tariff) {
+    public Client(String number, Tariff tariff) {
         this.number = number;
         this.tariff = tariff;
     }
@@ -29,11 +29,11 @@ public class Client {
         this.id = id;
     }
 
-    public Long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

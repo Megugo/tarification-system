@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientTarificationDetails {
-    private long phoneNumber;
+    private String phoneNumber;
     private String tariffIndex;
     private List<CallInfo> payload;
     private double totalCost;

@@ -40,7 +40,7 @@ public class ClientController {
             @ApiResponse(responseCode = "403", description = "No permissions to resource. Might also be server-side error")
     })
     @GetMapping("/report/{phoneNumber}")
-    public ReportResponseDto getReport(@PathVariable long phoneNumber) throws IllegalAccessException {
+    public ReportResponseDto getReport(@PathVariable String phoneNumber) throws IllegalAccessException {
         return clientService.getReport(phoneNumber);
     }
 
@@ -49,7 +49,7 @@ public class ClientController {
             @ApiResponse(responseCode = "200", description = "User was successfully registered")
     })
     @PostMapping("/register")
-    public void register(@RequestBody ClientRegistrationDto clientRegistrationDto){
+    public void register(@Valid @RequestBody ClientRegistrationDto clientRegistrationDto){
         clientService.register(clientRegistrationDto);
     }
 }

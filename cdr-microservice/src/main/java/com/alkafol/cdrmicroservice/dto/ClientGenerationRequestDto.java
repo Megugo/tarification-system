@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientGenerationRequestDto {
-    List<Long> baseNumbers;
+    List<String> baseNumbers;
     int numbersAmount;
 }

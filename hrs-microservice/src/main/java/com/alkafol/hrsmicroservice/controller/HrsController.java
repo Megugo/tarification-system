@@ -29,7 +29,7 @@ public class HrsController {
     })
     @PostMapping(path = "/count_cdrplus", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public TarificationResult countCdrPlus(@RequestParam MultipartFile multipartFile) throws IOException {
-        return hrsService.countPriceForClient(multipartFile);
+        return hrsService.handleCdrPlus(multipartFile);
     }
 
 }
