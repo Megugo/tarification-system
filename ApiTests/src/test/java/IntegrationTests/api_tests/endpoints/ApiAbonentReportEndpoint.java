@@ -2,22 +2,24 @@ package IntegrationTests.api_tests.endpoints;
 
 
 
-import IntegrationTests.api_tests.dto.clientdto.ReportResponse;
+import IntegrationTests.api_tests.dto.clientdto.AbonentRegisterDto;
+import IntegrationTests.api_tests.dto.clientdto.ReportDto;
 
 import static io.restassured.RestAssured.given;
 
 @Endpoint("/abonent/report")
 public class ApiAbonentReportEndpoint extends BaseEndpoint{
 
-    public ReportResponse getRepot(String phoneNumber, String login, String password){
+    public ReportDto getRepot(AbonentRegisterDto abonentRegisterDto){
+
         return given()
                 .auth()
                 .preemptive()
-                .basic(login, password)
-                .get(getEndpoint()+"/"+phoneNumber)
+                .basic(abonentRegisterDto.getPhoneNumber(), abonentRegisterDto.getPassword())
+                .get(getEndpoint()+"/"+abonentRegisterDto.getPhoneNumber())
                 .then()
                 .statusCode(200)
                 .extract()
-                .as(ReportResponse.class);
+                .as(ReportDto.class);
     }
 }

@@ -67,14 +67,21 @@ public class PosgresConnector {
         return tarifIDs;
     }
 
+    public List<Tariff> getTariffIDs () throws SQLException {
+        BRT();
+        try (org.sql2o.Connection connection = BRT.beginTransaction()){
+            List<Tariff> tarifIDs = connection.createQuery("select id from tariff").executeAndFetch(Tariff.class);
+            connection.commit();
+
+        return tarifIDs;
+        }
+    }
+
     public String addBRTUserWitchRandomParams(int numberLength, int userId) throws SQLException {
         BRT();
 
-        List<Tariff> tarifIDs = null;
-        try (org.sql2o.Connection connection = BRT.beginTransaction()){
-            tarifIDs  = connection.createQuery("select id from tariff").executeAndFetch(Tariff.class);
-            connection.commit();
-        }
+        List<Tariff> tarifIDs = getTariffIDs();
+
 
         double randomBalance = (Math.random() * (1000 + 1000) - 1000);
         String phoneNumber = new DataGenerator().generatePhoneNumber(numberLength);

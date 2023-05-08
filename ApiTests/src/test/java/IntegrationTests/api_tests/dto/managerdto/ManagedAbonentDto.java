@@ -1,6 +1,4 @@
-package IntegrationTests.api_tests.dto.clientdto;
-
-import java.util.List;
+package IntegrationTests.api_tests.dto.managerdto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,23 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ReportResponse{
+public class ManagedAbonentDto{
 
 	@JsonProperty("phoneNumber")
 	private String phoneNumber;
 
-	@JsonProperty("tariffIndex")
-	private String tariffIndex;
+	@JsonProperty("balance")
+	private double balance;
 
-	@JsonProperty("payload")
-	private List<PayloadItem> payload;
-
-	@JsonProperty("monetaryUnit")
-	private String monetaryUnit;
+	@JsonProperty("tariffId")
+	private String tariffId;
 
 	@JsonProperty("id")
-	private int id;
-
-	@JsonProperty("totalCost")
-	private int totalCost;
+	private String id;
 }

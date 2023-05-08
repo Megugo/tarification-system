@@ -3,18 +3,14 @@ package IntegrationTests.api_tests;
 import IntegrationTests.api_tests.db.PosgresConnector;
 import IntegrationTests.api_tests.dto.clientdto.AbonentRegisterDto;
 import IntegrationTests.api_tests.dto.clientdto.PayDTO;
-import IntegrationTests.api_tests.dto.clientdto.ReportResponse;
 import IntegrationTests.api_tests.endpoints.ApiAbonentPayEndpoint;
 import IntegrationTests.api_tests.endpoints.ApiAbonentRegisterEndpoint;
-import IntegrationTests.api_tests.endpoints.ApiAbonentReportEndpoint;
 import IntegrationTests.api_tests.extentsion.ApiTestExtension;
 import com.github.javafaker.Faker;
-import io.restassured.path.json.JsonPath;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,7 +40,7 @@ public class ApiAbonentPayTest {
                 .password(new Faker().internet().password())
                 .build();
 
-        new ApiAbonentRegisterEndpoint().newAbonentRegistration( abonentRegisterDto.getPhoneNumber(), abonentRegisterDto.getPassword());
+        new ApiAbonentRegisterEndpoint().newAbonentRegistration( abonentRegisterDto);
     }
 
     @AfterAll
@@ -85,7 +81,7 @@ public class ApiAbonentPayTest {
     @MethodSource("successfulAbonentPay")
     void successAbonentPayTest(PayDTO payDto){
 
-        PayDTO expectedPayDto = new ApiAbonentPayEndpoint().payByPhone(payDto,abonentRegisterDto.getPhoneNumber(),abonentRegisterDto.getPassword());
+        PayDTO expectedPayDto = new ApiAbonentPayEndpoint().payByPhone(payDto,abonentRegisterDto);
         SoftAssertions softAssertions = new SoftAssertions();
 
         softAssertions.assertThat(expectedPayDto.getPhoneNumber()).isEqualTo(payDto.getPhoneNumber());
